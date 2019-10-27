@@ -10,10 +10,22 @@ window.addEventListener('load', function (evt) {
 
 // Listen to messages from the payload.js script and write to popout.html
 chrome.runtime.onMessage.addListener(function (message) {
+	message = message.replace(/#/g, '_');
+	console.log("Hit Message");
 	if (message.length == 0) {
 		document.getElementById('pagetitle').innerHTML = "Page formatted Incorrectly, no text detected"
 	}
-	document.getElementById('pagetitle').innerHTML = message.length > 100 ? "Text successfully fetched (Too long to display)" : message
+	else {
+		document.getElementById('pagetitle').innerHTML = message;
+		const http = new XMLHttpRequest();
+		http.open('POST', 'http://127.0.0.1:5002/post-text?book-text=', /*async=*/true)
+		
+		http.setRequestHeader('Content-type', 'application/json')
+		http.send(message);
+		http.onload = function () {
+			alert("Successfully Sent to UI");
+		}
+	}
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -24,22 +36,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-chrome.runtime.onMessage.addListener(function (message) {
+// chrome.runtime.onMessage.addListener(function (message) {
 	
-	//Tried encodingURI
-	//Replace all # signs with a different character
-
-	if (message.length > 50	) {
-		message = message.replace(/#/g, '_');
-		const http = new XMLHttpRequest()
-		
-		http.open('POST', 'http://127.0.0.1:5002/post-text?book-text=' +
-encodeURI(JSON.stringify(message)), true)
-		http.setRequestHeader('Content-type', 'application/json')
-		http.send(encodeURI(JSON.stringify(message))) // Make sure to stringify
-		http.onload = function () {
-			alert(http.responseText)
-		}
-	}
+// 	//Replace all # signs with a different character
+// 	message = message.replace(/#/g, '_');
+// 	const http = new XMLHttpRequest();
 	
-});
+// 	http.open('POST', 'http://127.0.0.1:5002/post-text?book-text=', true)
+	
+// 	http.setRequestHeader('Content-type', 'application/json')
+// 	http.send(encodeURI(JSON.stringify(message))) // Make sure to stringify
+// 	http.onload = function () {
+// 		alert("Text successfully sent!");
+// 	}
+	
+// });
