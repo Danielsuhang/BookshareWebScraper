@@ -35,19 +35,3 @@ document.addEventListener('DOMContentLoaded', function() {
 		chrome.tabs.create({'url': "http://www.bookshare.org/cms"});
     });
 });
-
-// chrome.runtime.onMessage.addListener(function (message) {
-	
-// 	//Replace all # signs with a different character
-// 	message = message.replace(/#/g, '_');
-// 	const http = new XMLHttpRequest();
-	
-// 	http.open('POST', 'http://127.0.0.1:5002/post-text?book-text=', true)
-	
-// 	http.setRequestHeader('Content-type', 'application/json')
-// 	http.send(encodeURI(JSON.stringify(message))) // Make sure to stringify
-// 	http.onload = function () {
-// 		alert("Text successfully sent!");
-// 	}
-	
-// });
